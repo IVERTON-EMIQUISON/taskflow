@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuário</title>
+</head>
+<style>
+  body {
+            background-color: #1e1e2f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-card {
+            background: #27293d;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            text-align: center;
+        }
+        .login-card h1 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 50px;
+        }
+        .login-card label {
+            color: #fff;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .login-card input[type="text"],
+        .login-card input[type="email"],
+        .login-card input[type="password"] {
+            width: 85%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .login-card button {
+            background: #ff69b4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .login-card a {
+            color: #ff69b4;
+            text-decoration: none;
+        }
+        p {
+            color: #fff;
+        }
+        #message {
+            color: red;
+            margin-top: 10px;
+        }
+
+</style>
+<body>
+ <div class="login-card">
+    <h1>Registro de Usuário</h1>
+    <form id="registro-form">
+        {% csrf_token %}  
+        <label for="username">Nome de Usuário:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <label for="confirm_password">Confirmar Senha:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+        <button type="submit">Registrar</button>
+        <p>
+            Tem uma conta? <a href="{% url 'index' %}" class="text-primary">Entrar</a>
+        </p>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById("registro-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var username = document.getElementById("username").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            var confirm_password = document.getElementById("confirm_password").value;
+
+            if (password !== confirm_password) {
+                document.getElementById("message").innerHTML = 'As senhas não coincidem';
+                return;
+            }
+
+            fetch('/registro/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') // Obtenha o valor do token CSRF
+                },
+                body: JSON.stringify({
+                    'username': username,
+                    'email': email,
+                    'password': password
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao registrar usuário');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("message").innerHTML = 'Usuário registrado com sucesso';
+            })
+            .catch(error => {
+                document.getElementById("message").innerHTML = error.message;
+            });
+        });
+
+        // Função para obter o valor do token CSRF
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
