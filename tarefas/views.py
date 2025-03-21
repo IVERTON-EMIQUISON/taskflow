@@ -4,8 +4,11 @@ from django.contrib.auth.decorators import login_required
 from .models import Tarefa, Categoria  
 from .forms import TarefaForm  
 from .models import Status  # Add this line to import Status
-from django.utils import timezone 
+from django.utils import timezone
+from django.utils.timezone import make_aware
+from django.utils.dateparse import parse_datetime
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from .forms import CategoriaForm
 
 @login_required  
 def lista_tarefas(request):  
@@ -38,16 +41,19 @@ def criar_tarefa(request):
             tarefa = form.save(commit=False)
             tarefa.usuario = request.user
             
-            # Capturar categoria do formulário
+            #Capturar nova categoria ou selecionar existente
             categoria_id = request.POST.get("categoria")
             if categoria_id:
                 tarefa.categoria = get_object_or_404(Categoria, id=categoria_id)
-           
             # Garantindo que o prazo seja interpretado corretamente
             prazo = request.POST.get("prazo")
+           
             if prazo:
-                tarefa.prazo = prazo  # Django já entende o formato recebido
-                
+                prazo_datetime = parse_datetime(prazo)  # Converte string para DateTimeField
+                if prazo_datetime:
+                    tarefa.prazo = make_aware(prazo_datetime)  # Garante que tem timezone
+                else:
+                    return JsonResponse({"error": "Formato de data inválido"}, status=400)
             tarefa.save()
             return JsonResponse({"message": "Tarefa criada com sucesso!"}, status=201)
 
@@ -60,7 +66,29 @@ def criar_tarefa(request):
         "categorias": categorias,
         "status_opcoes": status_opcoes  # Enviando status para o template
     })
-    
+
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from .models import Categoria
+from .forms import CategoriaForm
+@login_required 
+def criar_categoria(request):
+    if request.method == "POST":
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            categoria = form.save()
+            return JsonResponse({"message": "Categoria criada com sucesso!"}, status=201)
+        return JsonResponse({"error": "Dados inválidos"}, status=400)
+
+    return render(request, "categorias/criar.html", {"form": CategoriaForm()})
+@login_required
+def excluir_categoria(request):  
+    if request.method == "POST":  
+        categoria_id = request.POST.get("categoria_id")  # Obtém o ID da categoria do corpo da requisição POST  
+        categoria = get_object_or_404(Categoria, id=categoria_id)  # Busca a categoria pelo ID; gera 404 se não encontrado  
+        categoria.delete()  # Exclui a categoria do banco de dados  
+        return JsonResponse({"message": "Categoria excluída com sucesso!"})  # Retorna uma resposta JSON de sucesso  
+    return JsonResponse({"error": "Requisição inválida"}, status=400)  # Retorna erro se não for uma requisição POST  
 @login_required
 def buscar_tarefa_por_titulo(request):  
     titulo = request.GET.get('titulo', '')  
@@ -71,7 +99,7 @@ def buscar_tarefa_por_titulo(request):
             'id': tarefa.id,  
             'titulo': tarefa.titulo,  
             'descricao': tarefa.descricao,  
-            'prazo': tarefa.prazo,  
+            "prazo": tarefa.prazo.strftime('%Y-%m-%d %H:%M:%S'),  
             'categoria': tarefa.categoria_id,  # Ou outro campo que represente a categoria  
             'status': tarefa.status,  
         }  
