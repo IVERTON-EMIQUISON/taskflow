@@ -41,6 +41,23 @@
             border-radius: 10px;  
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
         }  
+        .links {
+            max-width: 500px;
+            background: white;  
+            padding: 5px;  
+            border-radius: 10px;  
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            margin-block: 18px;
+        }
+
+        .links a {
+            margin: 10px;
+            width: 100%;
+            text-align: center;
+        }
         
         h2 {  
             text-align: center;  
@@ -67,10 +84,10 @@
 </head>  
 <body>  
     <div class="top-bar">  
-        <a href="http://127.0.0.1:8000/tarefas">Página Inicial</a> 
+        <a href="http://127.0.0.1:8000/tarefas">🏠</a> 
         <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1" aria-label="Editar Tarefa">✏️</a>  
-        <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1" aria-label="Deletar Tarefa">🗑️</a>  
-        <a href="http://127.0.0.1:8000" aria-label="Sair">Sair</a>
+        <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1" aria-label="Deletar Tarefa">🗑️</a>
+        <a href="http://127.0.0.1:8000" aria-label="Sair">➡️</a>
 
     </div>
     <div class="container mt-5">  
@@ -103,9 +120,8 @@
                 </select>
             </div>  
 
-            <div class="mb-3">  
-                <label for="nova_categoria" class="form-label">Nova Categoria</label>  
-                <input type="text" class="form-control" id="nova_categoria" name="nova_categoria" placeholder="Digite uma nova categoria (ou selecione abaixo)">
+            <div class="links">  
+                <a href="http://127.0.0.1:8000/categorias/criar" class="btn btn-primary">Criar ou Excluir Categorias</a>
             </div>
             
             <div class="mb-3">  
