@@ -170,15 +170,18 @@
     <div class="container">  
         {% block content %}  
         <h2>Cadastrar Nova Categoria</h2>  
-      
+        
 
         <form id="category-form" method="POST">  
             {% csrf_token %}  
             {{ form.as_p }}  
-            <button type="submit" class="btn btn-primary">Salvar</button>  
+            <button type="submit" class="btn btn-primary">Salvar</button> 
+            <a href="http://127.0.0.1:8000/tarefas/criar" >Voltar para Criar Tarefa</a>
+
         </form>  
-        <a href="http://127.0.0.1:8000/tarefas/criar">Voltar para Criar Tarefa</a>   
-         <div id="message"></div> 
+        <div id="message"></div> 
+        
+       
         {% endblock %}  
 
         <h2>Excluir Categoria</h2>
@@ -188,6 +191,7 @@
                 <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
             {% endfor %}
         </select>
+        
         <button id="delete-category">Excluir</button>
         <div id="delete-message"></div>
 
@@ -195,23 +199,23 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
     <script>  
-        $(document).ready(function () {
-            $("#category-form").submit(function (event) {
-                event.preventDefault();
-        
-                $.ajax({
-                    type: "POST",
-                    url: window.location.href,
-                    data: $(this).serialize(),
-                    success: function (response) {
-                        $("#message").html('<div class="alert alert-success">Categoria criada com sucesso!</div>');
-                        $("#category-form")[0].reset();
-                    },
-                    error: function () {
-                        $("#message").html('<div class="alert alert-danger">Erro ao criar categoria.</div>');
-                    }
-                });
-            });
+        $(document).ready(function () {  
+            $("#category-form").submit(function (event) {  
+                event.preventDefault(); // Evita recarregamento da página  
+
+                $.ajax({  
+                    type: "POST",  
+                    url: window.location.href,  
+                    data: $(this).serialize(),  
+                    success: function (response) {  
+                        $("#message").html('<div class="alert alert-success">Categoria criada com sucesso!</div>');  
+                        $("#category-form")[0].reset(); // Limpa o formulário  
+                    },  
+                    error: function () {  
+                        $("#message").html('<div class="alert alert-danger">Erro ao criar categoria.</div>');  
+                    }  
+                });  
+            });  
         
             $("#delete-category").click(function () {
                 let categoriaId = $("#category-select").val();
@@ -220,15 +224,10 @@
                     $("#delete-message").html('<div class="alert alert-danger">Selecione uma categoria para excluir.</div>');
                     return;
                 }
-        
-                if (!confirm("Tem certeza que deseja excluir esta categoria?")) {
-                    return;
-                }
-        
                 $.ajax({
                     type: "POST",
                     url: "/tarefas/excluir_categoria/",
-                    data: { categoria_id: categoriaId },
+                    data: { categoria_id: categoriaId, csrfmiddlewaretoken: "{{ csrf_token }}" },
                     success: function (response) {
                         $("#delete-message").html('<div class="alert alert-success">Categoria excluída com sucesso!</div>');
                         $("#category-select option[value='" + categoriaId + "']").remove();

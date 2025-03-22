@@ -76,15 +76,16 @@ def criar_categoria(request):
     if request.method == "POST":
         form = CategoriaForm(request.POST)
         if form.is_valid():
-            categoria = form.save()
+            form.save()
             return JsonResponse({"message": "Categoria criada com sucesso!"}, status=201)
-        return JsonResponse({"error": "Dados inválidos"}, status=400)
-
-    return render(request, "categorias/criar.html", {"form": CategoriaForm()})
+        return JsonResponse({"error": "Erro ao criar categoria."}, status=400)
+    categorias = Categoria.objects.all()
+    return render(request, "categorias/criar.html", {"form": CategoriaForm(), "categorias": categorias})
 @login_required
 def excluir_categoria(request):  
     if request.method == "POST":  
-        categoria_id = request.POST.get("categoria_id")  # Obtém o ID da categoria do corpo da requisição POST  
+        categoria_id = request.POST.get("categoria_id")  # Obtém o ID da categoria 
+      
         categoria = get_object_or_404(Categoria, id=categoria_id)  # Busca a categoria pelo ID; gera 404 se não encontrado  
         categoria.delete()  # Exclui a categoria do banco de dados  
         return JsonResponse({"message": "Categoria excluída com sucesso!"})  # Retorna uma resposta JSON de sucesso  
