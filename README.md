@@ -16,7 +16,7 @@ Coloque aqui prints da interface do sistema para ilustrar o funcionamento.
 ### 1️⃣ Clonar o Repositório
 ```bash
 git clone https://github.com/IVERTON-EMIQUISON/taskflow.git
-cd sistema-tarefas
+cd taskflow
 ```
 ### 2️⃣ Criar e Ativar o Ambiente Virtual
 ```bash
