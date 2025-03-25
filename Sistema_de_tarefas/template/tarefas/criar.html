@@ -5,12 +5,27 @@
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <title>Criar Nova Tarefa</title>  
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>  
         body {  
-            background: #f4f4f9;;
-            font-family: "Arial", sans-serif;  
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;  
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }  
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
         /* Barra superior fixa */
         .top-bar {  
             top: 0;  
@@ -33,13 +48,6 @@
         }  
         .top-bar a:hover {
             background: #003f80;
-        }
-        .container {  
-            max-width: 500px;  
-            background: white;  
-            padding: 20px;  
-            border-radius: 10px;  
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
         }  
         .links {
             max-width: 500px;
@@ -52,16 +60,16 @@
             margin-top: 10px;
             margin-block: 18px;
         }
-
         .links a {
             margin: 10px;
             width: 100%;
             text-align: center;
         }
         
-        h2 {  
+        h1 {  
             text-align: center;  
-            margin-bottom: 20px;  
+            color: #333;
+          
         }  
         
         .btn-primary {  
@@ -77,21 +85,25 @@
             text-decoration: none;
             align-items: end;
         }
-        .mt-5 {
-            margin-top: 0rem !important;
+        .category-buttons {
+            display: flex;
+            justify-content: space-between; /*'space-between' para deixar os botões nas extremidades*/
+            width: 100%;
         }
+      
+      
     </style> 
 </head>  
 <body>  
     <div class="top-bar">  
-        <a href="http://127.0.0.1:8000/tarefas">🏠</a> 
-        <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1" aria-label="Editar Tarefa">✏️</a>  
-        <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1" aria-label="Deletar Tarefa">🗑️</a>
-        <a href="http://127.0.0.1:8000" aria-label="Sair">➡️</a>
+        <a href="http://127.0.0.1:8000/tarefas"title="Página Inicial">🏠</a> 
+        <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1"title="Editar Tarefa"aria-label="Editar Tarefa">✏️</a>  
+        <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1"title="Deletar Tarefa"aia-label="Deletar Tarefa">🗑️</a>
+        <a href="http://127.0.0.1:8000"title="Sair do sistema"aria-label="Sair">➡️</a>
 
     </div>
     <div class="container mt-5">  
-        <h2 class="text-center">Criar Nova Tarefa</h2>  
+        <h1>Criar Nova Tarefa</h1>  
         
         <form id="task-form" method="POST">  
             {% csrf_token %}  
@@ -120,8 +132,9 @@
                 </select>
             </div>  
 
-            <div class="links">  
-                <a href="http://127.0.0.1:8000/categorias/criar" class="btn btn-primary">Criar ou Excluir Categorias</a>
+            <div class="category-buttons">  
+                <a href="http://127.0.0.1:8000/categorias/criar" class="btn btn-primary">Criar Categorias</a>
+                <a href="http://127.0.0.1:8000/categorias/deletar/" class="btn btn-secondary">Excluir Categorias</a>
             </div>
             
             <div class="mb-3">  
@@ -142,7 +155,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="buttons">
+            <div class="category-buttons">
                 <button type="submit" type="button" id="buscar_btn" class="btn btn-primary">Criar Tarefa</button>  
                 <a href="http://127.0.0.1:8000/tarefas/" class="btn btn-secondary">Cancelar</a>
             </div>

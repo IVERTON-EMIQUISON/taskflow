@@ -8,18 +8,6 @@ def registro(request):
     return render(request, 'core/registro.html')  # Renderiza o template de registro
 
 from django.shortcuts import redirect
-
-def lista_view(request):
-    # Lógica para a página de lista, se necessário
-    return render(request, os.path.join(os.path.dirname(__file__), '..', './template/lista.html'))
-
-def deletar_view(request):
-    # Lógica para a página de deletar, se necessário
-    return render(request, os.path.join(os.path.dirname(__file__), '..', './template/deletar.html'))
-def editar_view(request):
-    # Lógica para a página de editar, se necesario
-    return render(request, os.path.join(os.path.dirname(__file__), '..', './template/editar.html'))
-
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt

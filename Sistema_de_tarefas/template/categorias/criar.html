@@ -3,198 +3,201 @@
 <html lang="en">  
 <head>  
     <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
     <title>Cadastrar Nova Categoria</title>  
-    <style>  
-      /* Reset básico */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    /* Estilização geral */
-    body {
-        background-color: #f4f4f4;
-        color: #333;
-        line-height: 1.6;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh; /* Mantém o conteúdo centralizado verticalmente */
-    }
-
-    /* Container principal */
-    .container {
-        max-width: 600px;
-        width: 100%; /* Para responsividade */
-        background: white;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Títulos */
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 22px;
-    }
-
-    /* Formulário */
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-
-    form label {
-        font-weight: bold;
-        margin-top: 12px;
-    }
-
-    form input,
-    form select,
-    form textarea {
-        width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-
-    form button {
-        margin-top: 15px;
-        padding: 12px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 18px;
-        transition: background 0.3s ease-in-out;
-    }
-
-    form button:hover {
-        background: #0056b3;
-    }
-
-    /* Link para voltar */
-    a {
-        display: block;
-        text-align: center;
-        margin-top: 15px;
-        color: #007bff;
-        text-decoration: none;
-        font-size: 16px;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    /* Alertas */
-    .alert {
-        padding: 12px;
-        margin-top: 12px;
-        border-radius: 5px;
-        font-size: 16px;
-        text-align: center;
-    }
-
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-
-    .alert-danger {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-
-    /* Seletor de categoria */
-    #category-select {
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-
-    /* Botão de excluir */
-    #delete-category {
-        width: 100%;
-        padding: 12px;
-        margin-top: 15px;
-        background: #dc3545;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 18px;
-        transition: background 0.3s ease-in-out;
-    }
-
-    #delete-category:hover {
-        background: #a71d2a;
-    }
-
-    /* Responsividade */
-    @media (max-width: 600px) {
+    <style>
+        /* Estilização geral */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;  
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        /* Barra superior fixa */
+        .top-bar {  
+            top: 0;  
+            width: 100%;  
+            background: #007bff;  
+            padding: 10px;  
+            text-align: center;  
+            z-index: 1000;  
+        }  
+        
+        .top-bar a {  
+            color: white;  
+            text-decoration: none;  
+            font-weight: bold;  
+            margin: 0 15px;  
+            padding: 8px 15px;  
+            border-radius: 5px;  
+            display: inline-block;  
+            transition: background 0.3s;  
+        }  
+        .top-bar a:hover {
+            background: #003f80;
+        }
+        /* Container principal */
         .container {
+            max-width: 600px;
+            width: 100%;
             padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        h2 {
-            font-size: 20px;
+        /* Títulos */
+        h1 {
+            text-align: center;
+        
+        }
+
+        /* Formulário */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            font-weight: bold;
+            margin-top: 12px;
         }
 
         form input,
         form select,
-        form textarea,
-        form button,
-        #delete-category {
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             font-size: 16px;
         }
-    }
+    
+        form button {
+            width: 100px;
+            margin-top: 16px;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background 0.3s ease-in-out;
+        }
 
-    </style>  
+        form button:hover {
+            background: #0056b3;
+        }  
+        /* Botões lado a lado */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+    /* Link como botão */
+        .btn-secondary {
+            width: 100px;
+            margin-top: 16px;
+            padding: 12px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background 0.3s ease-in-out;
+        
+        }
+    
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        /* Alertas */
+        .alert {
+            padding: 12px;
+            margin-top: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Seletor de categoria */
+        #category-select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            form input,
+            form select,
+            form textarea,
+            form button,
+            #delete-category {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>  
 <body>  
-
-    <div class="container">  
+    <div class="top-bar">  
+        <a href="http://127.0.0.1:8000/tarefas"title="Página Inicial">🏠</a> 
+        <a href="{% url 'criar_tarefa' %}" aria-label="Criar nova tarefa"title="Criar nova tarefa" >📝</a>    
+        <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1" title="Editar Tarefa" aria-label="Editar Tarefa">✏️</a>
+        <a href="http://127.0.0.1:8000/tarefas/deletar/1" title="Deletar Tarefa" aria-label="Deletar Tarefa">🗑️</a>   
+        <a href="http://127.0.0.1:8000" title="Sair do sistema" aria-label="Sair">➡️</a>
+    </div>
+    <div class="container mt-5">  
         {% block content %}  
-        <h2>Cadastrar Nova Categoria</h2>  
-        
+        <h1>Cadastrar Nova Categoria</h1>  
 
         <form id="category-form" method="POST">  
             {% csrf_token %}  
             {{ form.as_p }}  
-            <button type="submit" class="btn btn-primary">Salvar</button> 
-            <a href="http://127.0.0.1:8000/tarefas/criar" >Voltar para Criar Tarefa</a>
-
+            <div class="button-container"> 
+                <button type="submit" class="btn btn-primary">Salvar</button> 
+                <a href="http://127.0.0.1:8000/tarefas/criar" class="btn btn-secondary" >Cancelar</a>
+            </div>
         </form>  
         <div id="message"></div> 
-        
        
         {% endblock %}  
-
-        <h2>Excluir Categoria</h2>
-        <select id="category-select">
-            <option value="">Selecione uma categoria</option>
-            {% for categoria in categorias %}
-                <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
-            {% endfor %}
-        </select>
-        
-        <button id="delete-category">Excluir</button>
-        <div id="delete-message"></div>
-
+       
     </div>  
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
@@ -216,29 +219,7 @@
                     }  
                 });  
             });  
-        
-            $("#delete-category").click(function () {
-                let categoriaId = $("#category-select").val();
-        
-                if (!categoriaId) {
-                    $("#delete-message").html('<div class="alert alert-danger">Selecione uma categoria para excluir.</div>');
-                    return;
-                }
-                $.ajax({
-                    type: "POST",
-                    url: "/tarefas/excluir_categoria/",
-                    data: { categoria_id: categoriaId, csrfmiddlewaretoken: "{{ csrf_token }}" },
-                    success: function (response) {
-                        $("#delete-message").html('<div class="alert alert-success">Categoria excluída com sucesso!</div>');
-                        $("#category-select option[value='" + categoriaId + "']").remove();
-                    },
-                    error: function () {
-                        $("#delete-message").html('<div class="alert alert-danger">Erro ao excluir categoria.</div>');
-                    }
-                });
-            });
         });
-        
     </script>  
 
 </body>  
