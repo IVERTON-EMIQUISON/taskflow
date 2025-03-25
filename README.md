@@ -9,9 +9,6 @@ Bem-vindo ao **Sistema de Controle de Tarefas Online**, uma aplicação web para
 - **Autenticação:** Django Authentication
 - **Estilização:** Bootstrap / TailwindCSS
 
-## 📸 Demonstração
-Coloque aqui prints da interface do sistema para ilustrar o funcionamento.
-
 ## 🛠️ Como Instalar e Executar
 ### 1️⃣ Clonar o Repositório
 ```bash
@@ -54,5 +51,5 @@ Acesse **http://127.0.0.1:8000/** no navegador.
 
 Este projeto é uma demonstração de como criar um sistema de gerenciamento de tarefas com Django!
 
-💡 Desenvolvido por IVERTON EMIQUISON 🚀
+💡 Desenvolvido por 🚀
 
