@@ -26,7 +26,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 # Removed duplicate import of path
 from users.api.register_apiview import LoginAPIView
-from tarefas.views import buscar_tarefa_por_titulo, criar_categoria
+from tarefas.views import buscar_tarefa_por_titulo, criar_categoria, excluir_categoria
 
 
 router = SimpleRouter()
@@ -42,6 +42,7 @@ urlpatterns = [
     path('tarefas/', include('tarefas.urls')),  
     path('registro.html', TemplateView.as_view(template_name="registro.html"), name='registro_html'), 
     path("categorias/criar/", criar_categoria, name="criar_categoria"),
+    path("categorias/deletar/", excluir_categoria, name="excluir_categoria"),
    
     path('registro/', RegistroUsuario.as_view(), name='registro_usuario'),  
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),

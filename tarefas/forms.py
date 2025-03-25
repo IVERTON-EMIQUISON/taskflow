@@ -12,3 +12,6 @@ class CategoriaForm(forms.ModelForm):  # Adicionando o CategoriaForm
     class Meta:
         model = Categoria
         fields = ['nome']
+        widgets = {
+            'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite a categoria de sua preferência'}),
+        }
