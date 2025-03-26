@@ -1,3 +1,4 @@
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
@@ -26,7 +27,8 @@
         margin: 0 15px;  
         padding: 8px 15px;  
         border-radius: 5px;  
-        display: inline-block;  
+        display: inline-flex;  
+        align-items: center;
         transition: background 0.3s;  
     }  
     .top-bar a:hover {
@@ -135,7 +137,34 @@
     .modal-footer {
         color: #007bff;
         text-align: center;
+    }
+    .modal-footer a {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s ease;
+    }
 
+    #editar-link {
+        background-color: #ffc107; 
+        color: #333;
+    }
+
+    #editar-link:hover {
+        background-color: #d39e00;
+    }
+
+    #deletar-link {
+        background-color: #dc3545; 
+        color: white;
+    }
+
+    #deletar-link:hover {
+        background-color: #b52b3a;
     }
     .close {
         color: #aaa;
@@ -179,7 +208,9 @@
         padding: 10px;  
         text-decoration: none;  
         color: #007BFF;  
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: 8px; 
     }  
     
     .menu-links a:hover {  
@@ -209,13 +240,15 @@
     }
 </style>
 
+{% load heroicons %}
+
 <div class="top-bar">  
     <div class="menu"> 
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>  
         <div class="menu-links">  
-            <a href="http://127.0.0.1:8000/tarefas/criar">📝 Criar Tarefa</a>  
-            <a href="http://127.0.0.1:8000/admin">🔑 Administrador</a>
-            <a href="http://127.0.0.1:8000">➡️ Sair</a>
+            <a href="http://127.0.0.1:8000/tarefas/criar">{% heroicon_outline "plus" %} Criar Tarefa</a>  
+            <a href="http://127.0.0.1:8000/admin">{% heroicon_outline "key" %} Admin</a>
+            <a href="http://127.0.0.1:8000">{% heroicon_outline "x-circle" %} Sair</a>
         </div>  
     </div> 
 </div>
@@ -238,7 +271,7 @@
                 )">
                     <li>{{ tarefa.titulo }}</li>
                 </div>                    
-                    {% if tarefa.atrada %} 
+                    {% if tarefa.atrasada %} 
                         <strong style="color:red;">ATRASADA</strong>  
                     {% endif %}  
 
@@ -263,7 +296,7 @@
                         '{{ tarefa.status|escapejs }}'  
                     )">  
                         <li>{{ tarefa.titulo }}</li>  
-                        {% if tarefa.atrada %}  <!-- Verificação para tarefas atrasadas -->  
+                        {% if tarefa.atrasada %}  <!-- Verificação para tarefas atrasadas -->  
                             <strong style="color:red;">ATRASADA</strong>  
                         {% endif %}   
                     </div>                    
@@ -288,9 +321,10 @@
                         '{{ tarefa.status|escapejs }}'
                     )">
                         <li>{{ tarefa.titulo }}</li>
-                    </div>                    
-                    {% if tarefa.atrada %} 
+                                       
+                    {% if tarefa.atrasada %} 
                         <strong style="color:red;">ATRASADA</strong>  
+                    </div> 
                     {% endif %} 
                 {% empty %}  
                     <div class="task-list"><li>Nenhuma tarefa em andamento.</li></div>  
@@ -312,10 +346,10 @@
                         '{{ tarefa.categoria|escapejs }}', 
                         '{{ tarefa.status|escapejs }}'
                     )">
-                        <li>{{ tarefa.titulo }}</li>
-                    </div>                    
-                    {% if tarefa.atrada %} 
-                        <strong style="color:red;">ATRASADA</strong>  
+                        <li>{{ tarefa.titulo }}</li>       
+                    {% if tarefa.atrasada %} 
+                        <strong style="color:red;">ATRASADA</strong> 
+                    </div>  
                     {% endif %} 
                 {% empty %}  
                     <div class="task-list"><li>Nenhuma tarefa aguardando aprovação.</li></div>
@@ -340,15 +374,12 @@
                         <li>{{ tarefa.titulo }}</li>
                         <strong style="color:green;">CONCLUÍDA</strong>
                     </div>                    
-                    {% if tarefa.atrada %} 
-                         
-                    {% endif %}
                 {% empty %}  
-                    <div class="task-list"><li>Nenhuma tarefa concluída.<br></li></div>
+                    <div class="task-list"><li>Nenhuma tarefa concluída.</li></div>  
                 {% endfor %}  
-            </ul>    
-        </div>
-    </div>
+            </ul> 
+        </div>  
+    </div>    
 </div>  
 <!-- Modal -->
 <div id="taskModal" class="modal">
@@ -362,8 +393,8 @@
         <p><strong>Status:</strong> <span id="modal-status"></span></p>
     
         <div class="modal-footer">
-            <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1" aria-label="Editar Tarefa">✏️</a>  
-            <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1" aria-label="Deletar Tarefa">🗑️</a>  
+            <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1" aria-label="Editar Tarefa">{% heroicon_outline "pencil" %} Editar Tarefa</a>  
+            <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1" aria-label="Deletar Tarefa">{% heroicon_outline "trash" %} Deletar Tarefa</a>  
         </div>
     </div>
 </div>

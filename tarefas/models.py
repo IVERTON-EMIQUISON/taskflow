@@ -18,14 +18,17 @@ class Status(models.TextChoices):
 class Arquivamento(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     tarefa = models.ForeignKey('Tarefa', on_delete=models.CASCADE)
-    Status = models.CharField(max_length=20, choices=Status.choices, default=Status.CONCLUIDA)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.CONCLUIDA)
     arquivada_em = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.tarefa.titulo} - {self.status}"
+
 
 class Tarefa(models.Model):  
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)  
     titulo = models.CharField(max_length=200)  
     descricao = models.TextField(blank=True, null=True)  
-    #prazo = models.DateTimeField()
     prazo = models.DateTimeField(null=False)   
     prioridade = models.CharField(max_length=10, choices=[  
         ('Baixa', 'Baixa'),  

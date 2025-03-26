@@ -1,4 +1,6 @@
 {% load static %}
+{% load heroicons %}
+
 <!DOCTYPE html>  
 <html lang="en">  
 <head>  
@@ -176,11 +178,12 @@
 </head>  
 <body>  
     <div class="top-bar">  
-        <a href="http://127.0.0.1:8000/tarefas"title="Página Inicial">🏠</a> 
-        <a href="{% url 'criar_tarefa' %}" aria-label="Criar nova tarefa"title="Criar nova tarefa" >📝</a>    
-        <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1" title="Editar Tarefa" aria-label="Editar Tarefa">✏️</a>
-        <a href="http://127.0.0.1:8000/tarefas/deletar/1" title="Deletar Tarefa" aria-label="Deletar Tarefa">🗑️</a>   
-        <a href="http://127.0.0.1:8000" title="Sair do sistema" aria-label="Sair">➡️</a>
+        <a href="http://127.0.0.1:8000/tarefas"title="Página Inicial">{% heroicon_outline "home" %} Página Inicial</a> 
+        <a href="http://127.0.0.1:8000/tarefas/criar"aria-label="Criar nova tarefa"title="Criar nova tarefa">{% heroicon_outline "plus" %} Criar Tarefa</a>
+        <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1"title="Editar Tarefa"aria-label="Editar Tarefa">{% heroicon_outline "pencil" %} Editar Tarefa</a>  
+        <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1"title="Deletar Tarefa"aia-label="Deletar Tarefa">{% heroicon_outline "trash" %} Deletar Tarefa</a>
+        <a href="http://127.0.0.1:8000"title="Sair do sistema"aria-label="Sair">{% heroicon_outline "x-circle" %} Sair</a>
+
     </div>
     <div class="container mt-5">  
         {% block content %}  

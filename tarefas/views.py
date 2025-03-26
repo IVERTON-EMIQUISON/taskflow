@@ -19,7 +19,7 @@ def lista_tarefas(request):
     tarefas_planejadas = tarefas.filter(status=Status.PLANEJADA, concluida=False).order_by('prazo')  
     tarefas_em_andamento = tarefas.filter(status=Status.EM_ANDAMENTO, concluida=False).order_by('prazo')  
     tarefas_aguardando_aprovacao = tarefas.filter(status=Status.AGUARDANDO_APROVACAO, concluida=False).order_by('prazo')  
-    tarefas_concluidas = tarefas.filter(concluida=True).order_by('-criada_em')  
+    tarefas_concluidas = tarefas.filter(status=Status.CONCLUIDA, concluida=False).order_by('prazo')  
 
     
     # Obtendo a data atual no fuso horário de São Paulo  
@@ -27,19 +27,19 @@ def lista_tarefas(request):
 
     # Determina o estado de 'atrasada' para cada tarefa  
     for tarefa in tarefas_pendentes:  
-        tarefa.atrada = tarefa.prazo < agora if tarefa.prazo else False  
+        tarefa.atrasada = tarefa.prazo < agora if tarefa.prazo else False  
  
     for tarefa in tarefas_planejadas:   
-        tarefa.atrada = tarefa.prazo < agora if tarefa.prazo else False  
+        tarefa.atrasada = tarefa.prazo < agora if tarefa.prazo else False  
 
     for tarefa in tarefas_em_andamento:  
-        tarefa.atrada = tarefa.prazo < agora if tarefa.prazo else False  
+        tarefa.atrasada = tarefa.prazo < agora if tarefa.prazo else False  
       
     for tarefa in tarefas_aguardando_aprovacao:   
-        tarefa.atrada = tarefa.prazo < agora if tarefa.prazo else False 
+        tarefa.atrasada = tarefa.prazo < agora if tarefa.prazo else False 
 
     for tarefa in tarefas_concluidas:  
-        tarefa.atrada = tarefa.prazo < agora if tarefa.prazo else False 
+        tarefa.atrasada = tarefa.prazo < agora if tarefa.prazo else False 
       
 
     # Contexto com todas as tarefas filtradas por status  
