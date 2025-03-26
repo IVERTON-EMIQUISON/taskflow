@@ -9,7 +9,15 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
-            /* Barra superior fixa */
+    .container {
+        max-width: 600px;
+        width: 100%;
+        padding: 20px;
+        background-color: #f4f4f4;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    /* Barra superior fixa */
     .top-bar {  
         
         top: 0;  
@@ -33,15 +41,18 @@
     .top-bar a:hover {
         background: #003f80;
     }
+    h2 {
+        text-align: center;
+        color: #333;
+    }
     </style>
 </head>
 <body>
     <div class="top-bar">  
-        <a href="http://127.0.0.1:8000/tarefas">Página Inicial</a> 
-        <a href="{% url 'criar_tarefa' %}" aria-label="Criar nova tarefa">Criar Nova Tarefa</a>   
-        <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1" aria-label="Editar Tarefa">✏️</a>  
-        <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1" aria-label="Deletar Tarefa">🗑️</a>   
-        <a href="http://127.0.0.1:8000" aria-label="Sair">Sair</a>
+        <a href="http://127.0.0.1:8000/tarefas"  title="Página Inicial">🏠</a> 
+        <a href="{% url 'criar_tarefa' %}" aria-label="Criar nova tarefa" title="Criar nova tarefa">📝</a>    
+        <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1" aria-label="Deletar Tarefa" title="Deletar Tarefa">🗑️</a>   
+        <a href="http://127.0.0.1:8000"title="Sair do sistema" aria-label="Sair">➡️</a>
     </div>
     <div class="container mt-5">
         <h2>Editar Tarefa</h2>

@@ -10,21 +10,21 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: white;
             margin: 0;
-            padding: 0;
-            display: flex;
+            padding: 0;  
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
         
         .container {
-            background: white;
+            max-width: 600px;
+            width: 100%;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
@@ -52,10 +52,39 @@
             text-align: center;
             font-weight: bold;
         }
+        /* Barra superior fixa */
+        .top-bar {  
+            top: 0;  
+            width: 100%;  
+            background: #007bff;  
+            padding: 10px;  
+            text-align: center;  
+            z-index: 1000;  
+        }  
+        
+        .top-bar a {  
+            color: white;  
+            text-decoration: none;  
+            font-weight: bold;  
+            margin: 0 15px;  
+            padding: 8px 15px;  
+            border-radius: 5px;  
+            display: inline-block;  
+            transition: background 0.3s;  
+        }  
+        .top-bar a:hover {
+            background: #003f80;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="top-bar">  
+        <a href="http://127.0.0.1:8000/tarefas"title="Página Inicial">🏠</a> 
+        <a href="{% url 'criar_tarefa' %}" aria-label="Criar nova tarefa"title="Criar nova tarefa" >📝</a>    
+        <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1" title="Editar Tarefa" aria-label="Editar Tarefa">✏️</a>   
+        <a href="http://127.0.0.1:8000" title="Sair do sistema" aria-label="Sair">➡️</a>
+    </div>
+    <div class="container mt-5">
         <h1>Deletar Tarefa</h1>
         
         <!-- Formulário de deletação de tarefa -->
@@ -82,6 +111,7 @@
                 <button type="button" id="buscar_btn" class="btn btn-primary">Buscar</button>
                 <a href="http://127.0.0.1:8000/tarefas/" class="btn btn-secondary">Cancelar</a>
             </div>
+            <br>
         </form>
 
         <div id="tarefa_info" style="display: none;">

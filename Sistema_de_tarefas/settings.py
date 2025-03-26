@@ -91,7 +91,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',    # Adicione a origem do seu front-end
     'http://127.0.0.1:8000',    # Adicione a origem do seu front-end
-    'http://127.0.0.1:5500',    # Adicione outra origem, se necessário
+
     'https://8895-177-73-9-196.ngrok-free.app',  # Adicione a origem do NGROK
     'http://127.0.0.1:5500',  # Adicione a origem do seu frontend
     'http://127.0.0.1:5500',  # Adicione outra origem, se necessário

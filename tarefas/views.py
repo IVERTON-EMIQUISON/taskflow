@@ -21,6 +21,27 @@ def lista_tarefas(request):
     tarefas_aguardando_aprovacao = tarefas.filter(status=Status.AGUARDANDO_APROVACAO, concluida=False).order_by('prazo')  
     tarefas_concluidas = tarefas.filter(concluida=True).order_by('-criada_em')  
 
+    
+    # Obtendo a data atual no fuso horário de São Paulo  
+    agora = timezone.localtime(timezone.now())   
+
+    # Determina o estado de 'atrasada' para cada tarefa  
+    for tarefa in tarefas_pendentes:  
+        tarefa.atrada = tarefa.prazo < agora if tarefa.prazo else False  
+ 
+    for tarefa in tarefas_planejadas:   
+        tarefa.atrada = tarefa.prazo < agora if tarefa.prazo else False  
+
+    for tarefa in tarefas_em_andamento:  
+        tarefa.atrada = tarefa.prazo < agora if tarefa.prazo else False  
+      
+    for tarefa in tarefas_aguardando_aprovacao:   
+        tarefa.atrada = tarefa.prazo < agora if tarefa.prazo else False 
+
+    for tarefa in tarefas_concluidas:  
+        tarefa.atrada = tarefa.prazo < agora if tarefa.prazo else False 
+      
+
     # Contexto com todas as tarefas filtradas por status  
     context = {  
         'tarefas_pendentes': tarefas_pendentes,  
@@ -72,7 +93,7 @@ from django.http import JsonResponse
 from .models import Categoria
 from .forms import CategoriaForm
 @login_required 
-def criar_categoria(request):
+def criar_categoria(request,template="categorias/criar.html"):
     if request.method == "POST":
         form = CategoriaForm(request.POST)
         if form.is_valid():
@@ -80,16 +101,24 @@ def criar_categoria(request):
             return JsonResponse({"message": "Categoria criada com sucesso!"}, status=201)
         return JsonResponse({"error": "Erro ao criar categoria."}, status=400)
     categorias = Categoria.objects.all()
-    return render(request, "categorias/criar.html", {"form": CategoriaForm(), "categorias": categorias})
+    return render(request, template, {"form": CategoriaForm(), "categorias": Categoria.objects.all()})
 @login_required
-def excluir_categoria(request):  
+def excluir_categoria(request,template="categorias/deletar.html"):  
     if request.method == "POST":  
         categoria_id = request.POST.get("categoria_id")  # Obtém o ID da categoria 
-      
-        categoria = get_object_or_404(Categoria, id=categoria_id)  # Busca a categoria pelo ID; gera 404 se não encontrado  
-        categoria.delete()  # Exclui a categoria do banco de dados  
-        return JsonResponse({"message": "Categoria excluída com sucesso!"})  # Retorna uma resposta JSON de sucesso  
-    return JsonResponse({"error": "Requisição inválida"}, status=400)  # Retorna erro se não for uma requisição POST  
+        
+       # Verifica se categoria_id é válido  
+        if not categoria_id:  
+            return JsonResponse({"error": "ID da categoria não foi fornecido."}, status=400)  
+        
+        try:  
+            categoria = get_object_or_404(Categoria, id=categoria_id)  
+            categoria.delete()  
+            return JsonResponse({"message": "Categoria excluída com sucesso!"})  
+        except Exception as e:  
+            return JsonResponse({"error": str(e)}, status=500)  # Retorna erro genérico com mensagem  
+            
+    return render(request, template, {"categorias": Categoria.objects.all()})  
 @login_required
 def buscar_tarefa_por_titulo(request):  
     titulo = request.GET.get('titulo', '')  
@@ -130,7 +159,15 @@ def editar_tarefa(request, id):
     if request.method == "POST":
         form = TarefaForm(request.POST, instance=tarefa)
         if form.is_valid():
+              # Se o prazo for editado, faça a verificação  
+            prazo = request.POST.get("prazo")  
+            if prazo:  
+                prazo_datetime = parse_datetime(prazo)  
+                if prazo_datetime:  
+                    tarefa.prazo = make_aware(prazo_datetime)  
+            
             form.save()
+            
             return JsonResponse({"message": "Tarefa atualizada com sucesso!"}, status=200)
         return JsonResponse({"error": "Dados inválidos"}, status=400)
 

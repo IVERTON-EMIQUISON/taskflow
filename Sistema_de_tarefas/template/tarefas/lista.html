@@ -5,7 +5,7 @@
         font-family: 'Poppins', sans-serif;
         background: #f4f4f9;
         color: #333;
-        margin: 0;
+        margin: 0; 
         padding: 0;
     }
     /* Barra superior fixa */
@@ -16,7 +16,7 @@
         background: #007bff;  
         padding: 10px;  
         text-align: center;  
-        z-index: 1000;  
+        z-index: 1000; 
     }  
     
     .top-bar a {  
@@ -72,7 +72,7 @@
         padding-right: 5px;
     }
     .task-list::-webkit-scrollbar {
-        width: 5px;
+        width: 3px;
     }
     .task-list::-webkit-scrollbar-thumb {
         background: #007bff;
@@ -89,7 +89,30 @@
         background: #e9e9f4;
         cursor: pointer;
     }
-        /* Estilos do Modal */
+    /* barra horizontal */
+    .task-list::-webkit-scrollbar {
+        height: 5px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+    .task-list {
+        flex-grow: 1;  /* Ocupa todo o espaço disponível */
+        overflow-x: auto;  /* Garante que a barra horizontal apareça quando necessário */
+        white-space: nowrap; /* Evita quebra de linha */
+        position: relative; /* Para posicionar a barra horizontal */
+    }
+    .task-list::-webkit-scrollbar {
+        height: 3px; /* Diminui a altura da barra inferior */
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+    .task-list::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 10px;
+    }
+    /* Estilos do Modal */
     .modal {
         display: none;
         position: fixed;
@@ -107,7 +130,12 @@
         border-radius: 10px;
         width: 50%;
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        position: relative;
+    }
+    .modal-footer {
+        color: #007bff;
         text-align: center;
+
     }
     .close {
         color: #aaa;
@@ -119,59 +147,49 @@
     .close:hover {
         color: black;
     }
-    /*.wave {  
-        height: 100px;  
-        overflow: hidden;  
-        position: relative;  
-        background-color: #007bff;  
-    }  
-    
-    .wave svg {  
-        position: absolute;  
-        top: 0;  
-        left: 0;  
-        width: 100%;  
-        height: 100%;  
-        fill: #f4f4f9     
-    }    */
-    .menu {  
-        position: fixed;  
-        top: 20px;  
+    .menu {
+        top: 10px;  
         right: 20px;  
-        z-index: 1000;  
+
     }  
     
-    .menu-toggle {    
+    .menu-toggle {   
+        margin-left: 90%; 
         background-color: #007BFF;  
         color: white;  
         border: none;  
         border-radius: 5px;  
         padding: 10px;  
-        cursor: pointer;  
+        cursor: pointer; 
     }  
     
     .menu-links {  
-        display: flex;  
+        position: absolute;
+        top: 40px;  /* Para aparecer abaixo do botão */
+        right: 0;  
+        display: none;
         flex-direction: column;  
         background-color: white;  
         border: 1px solid #ccc;  
         border-radius: 5px;  
-        margin-top: 5px;  
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);  
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
     }  
     
     .menu-links a {  
         padding: 10px;  
         text-decoration: none;  
         color: #007BFF;  
+        display: block;
     }  
     
     .menu-links a:hover {  
         background-color: #f0f0f0;  
     }  
-    .hidden {  
-        display: none;  
-    }  
+   .show {  
+        display: flex; 
+        margin-top: 19px;
+        margin-right: 20px; 
+    }
     @media (max-width: 768px) {
         .container {
             flex-direction: column;
@@ -190,22 +208,17 @@
         }
     }
 </style>
+
 <div class="top-bar">  
-    <div class="menu">  
+    <div class="menu"> 
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>  
-        <div class="menu-links hidden">  
+        <div class="menu-links">  
             <a href="http://127.0.0.1:8000/tarefas/criar">📝 Criar Tarefa</a>  
-            <a href="http://127.0.0.1:8000/admin">🔑 Adimistrado</a>
+            <a href="http://127.0.0.1:8000/admin">🔑 Administrador</a>
             <a href="http://127.0.0.1:8000">➡️ Sair</a>
         </div>  
     </div> 
 </div>
-    <!-- <div class="wave"> 
-       
-        <svg viewBox="0 0 500 150" preserveAspectRatio="none">  
-            <path d="M0,120 C140,60 320,60 500,40 L500,150 L0,150 L0,150 Z " />  
-        </svg>  
-    </div>   -->
 
 <h1 style="text-align: center; margin-top: 100px;">Minhas Tarefas</h1>
 
@@ -217,7 +230,7 @@
                 {% for tarefa in tarefas_pendentes %}  
                 <div class="task" onclick="openModal(
                     '{{ tarefa.titulo|escapejs }}',
-                    'Criasda por {{ tarefa.usuario }} em: {{ tarefa.criada_em }}', 
+                    '{{ tarefa.usuario }} {{ tarefa.criada_em }}', 
                     '{{ tarefa.descricao|escapejs }}', 
                     '{{ tarefa.prazo|escapejs }}',  
                     '{{ tarefa.categoria|escapejs }}', 
@@ -225,7 +238,7 @@
                 )">
                     <li>{{ tarefa.titulo }}</li>
                 </div>                    
-                    {% if tarefa.prazo %} 
+                    {% if tarefa.atrada %} 
                         <strong style="color:red;">ATRASADA</strong>  
                     {% endif %}  
 
@@ -236,25 +249,49 @@
         </div>  
     </div>
     
-    <div class="card">
+    <div class="card">  
         <h2>Planejadas</h2><span class="count">{{ tarefas_planejadas|length }}</span>  
-        <div class="task-list">
+        <div class="task-list">  
             <ul>  
                 {% for tarefa in tarefas_planejadas %}  
-                    <li>{{ tarefa.titulo }} - Planejada em: {{ tarefa.criada_em }}</li>  
+                    <div class="task" onclick="openModal(  
+                        '{{ tarefa.titulo|escapejs }}',  
+                        '{{ tarefa.usuario }} {{ tarefa.criada_em }}',   
+                        '{{ tarefa.descricao|escapejs }}',   
+                        '{{ tarefa.prazo|escapejs }}',  
+                        '{{ tarefa.categoria|escapejs }}',   
+                        '{{ tarefa.status|escapejs }}'  
+                    )">  
+                        <li>{{ tarefa.titulo }}</li>  
+                        {% if tarefa.atrada %}  <!-- Verificação para tarefas atrasadas -->  
+                            <strong style="color:red;">ATRASADA</strong>  
+                        {% endif %}   
+                    </div>                    
                 {% empty %}  
-                    <div class="task-list"><li>Nenhuma tarefa planejada.</li></div>
+                    <div class="task-list"><li>Nenhuma tarefa planejada.</li></div>  
                 {% endfor %}  
             </ul>    
-        </div> 
-    </div>
+        </div>   
+    </div>  
 
     <div class="card">
         <h2>Em Andamento</h2><span class="count">{{ tarefas_em_andamento|length }}</span>  
         <div class="task-list">
             <ul>  
                 {% for tarefa in tarefas_em_andamento %}  
-                    <li>{{ tarefa.titulo }} - Em Andamento em: {{ tarefa.criada_em }}</li>  
+                    <div class="task" onclick="openModal(
+                        '{{ tarefa.titulo|escapejs }}',
+                        '{{ tarefa.usuario }} {{ tarefa.criada_em }}', 
+                        '{{ tarefa.descricao|escapejs }}', 
+                        '{{ tarefa.prazo|escapejs }}',  
+                        '{{ tarefa.categoria|escapejs }}', 
+                        '{{ tarefa.status|escapejs }}'
+                    )">
+                        <li>{{ tarefa.titulo }}</li>
+                    </div>                    
+                    {% if tarefa.atrada %} 
+                        <strong style="color:red;">ATRASADA</strong>  
+                    {% endif %} 
                 {% empty %}  
                     <div class="task-list"><li>Nenhuma tarefa em andamento.</li></div>  
                 {% endfor %}  
@@ -267,7 +304,19 @@
         <div class="task-list">
             <ul>  
                 {% for tarefa in tarefas_aguardando_aprovacao %}  
-                    <li>{{ tarefa.titulo }} - Aguardando Aprovação em: {{ tarefa.criada_em }}</li>  
+                    <div class="task" onclick="openModal(
+                        '{{ tarefa.titulo|escapejs }}',
+                        '{{ tarefa.usuario }} {{ tarefa.criada_em }}', 
+                        '{{ tarefa.descricao|escapejs }}', 
+                        '{{ tarefa.prazo|escapejs }}',  
+                        '{{ tarefa.categoria|escapejs }}', 
+                        '{{ tarefa.status|escapejs }}'
+                    )">
+                        <li>{{ tarefa.titulo }}</li>
+                    </div>                    
+                    {% if tarefa.atrada %} 
+                        <strong style="color:red;">ATRASADA</strong>  
+                    {% endif %} 
                 {% empty %}  
                     <div class="task-list"><li>Nenhuma tarefa aguardando aprovação.</li></div>
                 {% endfor %}  
@@ -280,9 +329,22 @@
         <div class="task-list">
             <ul>  
                 {% for tarefa in tarefas_concluidas %}  
-                    <li>{{ tarefa.titulo }} - Concluída em: {{ tarefa.criada_em }}</li>  
+                    <div class="task" onclick="openModal(
+                        '{{ tarefa.titulo|escapejs }}',
+                        '{{ tarefa.usuario }} {{ tarefa.criada_em }}', 
+                        '{{ tarefa.descricao|escapejs }}', 
+                        '{{ tarefa.prazo|escapejs }}',  
+                        '{{ tarefa.categoria|escapejs }}', 
+                        '{{ tarefa.status|escapejs }}'
+                    )">
+                        <li>{{ tarefa.titulo }}</li>
+                        <strong style="color:green;">CONCLUÍDA</strong>
+                    </div>                    
+                    {% if tarefa.atrada %} 
+                         
+                    {% endif %}
                 {% empty %}  
-                    <div class="task-list"><li>Nenhuma tarefa concluída.</li></div>
+                    <div class="task-list"><li>Nenhuma tarefa concluída.<br></li></div>
                 {% endfor %}  
             </ul>    
         </div>
@@ -292,14 +354,17 @@
 <div id="taskModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <h2 id="modal-title"></h2>
-        <p><strong></strong><span id="modal-usuario"></span></p>
-        <p><strong>Descrição:</strong><span id="modal-description"></p>
+        <P><strong>Titulo:</strong> <span id="modal-title"></span></P>
+        <p><strong>Criado por:</strong> <span id="modal-usuario"></span></p>
+        <p><strong>Descrição:</strong> <span id="modal-description"></p>
         <p><strong>Prazo:</strong> <span id="modal-date"></span></p>
         <p><strong>Categoria:</strong> <span id="modal-category"></span></p>
         <p><strong>Status:</strong> <span id="modal-status"></span></p>
-        <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1" aria-label="Editar Tarefa">✏️</a>  
-        <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1" aria-label="Deletar Tarefa">🗑️</a>  
+    
+        <div class="modal-footer">
+            <a id="editar-link" href="http://127.0.0.1:8000/tarefas/editar/1" aria-label="Editar Tarefa">✏️</a>  
+            <a id="deletar-link" href="http://127.0.0.1:8000/tarefas/deletar/1" aria-label="Deletar Tarefa">🗑️</a>  
+        </div>
     </div>
 </div>
 <script>
@@ -319,5 +384,8 @@
         const menuLinks = document.querySelector('.menu-links');  
         menuLinks.classList.toggle('hidden');  
     }  
+    function toggleMenu() {
+        document.querySelector('.menu-links').classList.toggle('show');
+    }
 
 </script>

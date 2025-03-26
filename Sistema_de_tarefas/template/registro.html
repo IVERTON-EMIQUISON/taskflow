@@ -6,75 +6,85 @@
     <title>Registro de Usuário</title>
 </head>
 <style>
-  body {
-            background-color: #1e1e2f;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+    body {
+        background-color: #f4f4f9;
+        font-family: "Arial", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
         }
         .login-card {
-            background: #27293d;
+            background: white;
             border-radius: 10px;
             padding: 30px;
-            box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             width: 500px;
             text-align: center;
         }
         .login-card h1 {
-            color: #fff;
+            color: #080808;
             font-size: 24px;
             margin-bottom: 50px;
         }
         .login-card label {
-            color: #fff;
+            color: #080808;
             display: block;
             margin-bottom: 5px;
+            text-align: left;
+            font-weight: bold;
         }
         .login-card input[type="text"],
         .login-card input[type="email"],
         .login-card input[type="password"] {
-            width: 85%;
+            width: 90%;
             padding: 10px;
             margin-bottom: 10px;
-            border: none;
+            border: 1px solid #ccc;
             border-radius: 5px;
+            margin-right: 25%;
         }
         .login-card button {
-            background: #ff69b4;
+            background: #007bff;
             color: #fff;
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
             cursor: pointer;
+            transition: background 0.3s;
         }
         .login-card a {
-            color: #ff69b4;
+            color: #007bff;
             text-decoration: none;
+            font-weight: bold;
         }
         p {
-            color: #fff;
+            color: #333;
         }
         #message {
             color: red;
             margin-top: 10px;
         }
 
-</style>
+    </style>
 <body>
  <div class="login-card">
     <h1>Registro de Usuário</h1>
     <form id="registro-form">
         {% csrf_token %}  
         <label for="username">Nome de Usuário:</label>
-        <input type="text" id="username" name="username" required><br><br>
+        <input type="text" id="username" Placeholder="Digite nome de usuário" name="username" required><br><br>
+
         <label for="email">E-mail:</label>
-        <input type="email" id="email" name="email" required><br><br>
+        <input type="email" id="email" Placeholder="Informe seu e-mail" name="email" required><br><br>
+
         <label for="password">Senha:</label>
-        <input type="password" id="password" name="password" required><br><br>
+        <input type="password" id="password" Placeholder="Digite sua senha" name="password" required><br><br>
+
         <label for="confirm_password">Confirmar Senha:</label>
-        <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+        <input type="password" id="confirm_password" Placeholder="Confirme sua senha" name="confirm_password" required>
+
         <button type="submit">Registrar</button>
         <p>
             Tem uma conta? <a href="{% url 'index' %}" class="text-primary">Entrar</a>
